@@ -36,7 +36,10 @@ from paddlenlp.utils.log import logger
 from data import GPT2Dataset
 import lr
 
-MODEL_CLASSES = {"gpt2-medium-en": (GPT2ForPretraining, GPT2Tokenizer), }
+MODEL_CLASSES = {
+    "gpt2-medium-en": (GPT2ForPretraining, GPT2Tokenizer),
+    "gpt2-small-en": (GPT2ForPretraining, GPT2Tokenizer),
+}
 
 
 def parse_args():
