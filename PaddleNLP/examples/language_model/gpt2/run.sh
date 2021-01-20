@@ -6,4 +6,4 @@ python run_pretrain.py --model_name_or_path gpt2-small-en --input_dir "./input_d
     --weight_decay 0.01\
     --max_steps 1000\
     --warmup_rate .1\
-    --batch_size 13\
+    --batch_size 27\

@@ -26,6 +26,7 @@ from concurrent.futures import ThreadPoolExecutor
 import numpy as np
 
 import paddle
+import paddle.fluid as fluid
 import paddle.distributed.fleet as fleet
 from paddle.io import DataLoader, Dataset
 
@@ -237,6 +238,26 @@ def copy_program_state_dict(model, static_dict, tensor_dict):
         new_state_dict[p.name] = tensor_dict[n]
     return new_state_dict
 
+def static_to_tensor(data, place=None):
+    res = fluid.LoDTensor()
+    if place is None:
+       place = fluid.CUDAPlace(0)
+    res.set(data, place)
+    return res
+
+def static_to_numpy(tensor):
+    return np.array(tensor) 
+
+
+def paddle_save(name, numpy_dict):
+    np.savez(name, **(numpy_dict)) 
+
+def paddle_load(name):
+    res = {}
+    load = np.load(name, allow_pickle=True)
+    for k in load.files:
+        res[k] = load[k]
+    return res
 
 def dist_optimizer(args, optimizer, model, worker_num):
     build_strategy, exec_strategy = create_strategy(args)
@@ -407,12 +428,25 @@ def do_train(args):
                                          data_file, data_holders, tokenizer,
                                          worker_init,
                                          paddle.static.cuda_places())
+            SAVE_FLAGS=False
+
+            if SAVE_FLAGS:
+                for step, batch in enumerate(train_data_loader):
+                    saved_input = {}
+                    for k,v in batch[0].items():
+                        saved_input[k] = static_to_numpy(v)
+                    paddle_save("bs42_input.npz", saved_input)
+                    exit(0)
+            #  batch = [{k:static_to_tensor(v, place) for k,v in  paddle_load("bs42_input.npz").items()}]
+            #  for step in range(100):
             for step, batch in enumerate(train_data_loader):
                 global_step += 1
                 loss_return = exe.run(main_program,
                                       feed=batch,
                                       fetch_list=[loss])
                 # In the new 2.0 api, must call this function to change the learning_rate
+                if SAVE_FLAGS:
+                    exit(0)
                 lr_scheduler.step()
                 if global_step % args.logging_steps == 0:
                     if worker_index == 0:
