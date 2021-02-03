@@ -533,10 +533,16 @@ class GPT2Model(GPT2PretrainedModel):
         if position_ids is None:
             past_length = 0
             if cache is not None:
-                past_length = cache[0].k.shape[-2]
+                past_length = paddle.shape(cache[0].k)[-2]
             position_ids = paddle.arange(
-                past_length, input_ids.shape[-1] + past_length, dtype='int64')
-            position_ids = position_ids.unsqueeze(0).expand_as(input_ids)
+                past_length,
+                paddle.shape(input_ids)[-1] + past_length,
+                dtype='int64')
+            position_ids = position_ids.unsqueeze(0)
+            # paddle.fluid.layers.Print(input_ids)
+            # paddle.fluid.layers.Print(position_ids)
+            position_ids = paddle.fluid.layers.expand_as(position_ids,
+                                                         input_ids)
 
         embedding_output = self.embeddings(
             input_ids=input_ids, position_ids=position_ids)
@@ -659,8 +665,8 @@ class GPT2ForGreedyGeneration(GPT2PretrainedModel):
 
             nid = paddle.argmax(output[0, -1]).reshape([1, -1])
             # if nid is '\n', the predicion is over.
-            if paddle.sum(nid) == 3:
-                break
+            # if paddle.sum(nid) == 3:
+            #     break
             src_ids = paddle.concat([src_ids, nid], axis=1)
 
         return src_ids
