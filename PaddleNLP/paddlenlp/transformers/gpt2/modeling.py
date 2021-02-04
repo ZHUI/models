@@ -541,8 +541,8 @@ class GPT2Model(GPT2PretrainedModel):
             position_ids = position_ids.unsqueeze(0)
             # paddle.fluid.layers.Print(input_ids)
             # paddle.fluid.layers.Print(position_ids)
-            position_ids = paddle.fluid.layers.expand_as(position_ids,
-                                                         input_ids)
+            # position_ids = paddle.fluid.layers.expand_as(position_ids,
+            position_ids = paddle.expand_as(position_ids, input_ids)
 
         embedding_output = self.embeddings(
             input_ids=input_ids, position_ids=position_ids)

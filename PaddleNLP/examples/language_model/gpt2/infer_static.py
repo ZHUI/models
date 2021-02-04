@@ -133,7 +133,7 @@ def do_train(args):
     exe = paddle.static.Executor(place)
     exe.run(startup_program)
 
-    load_pretrained_params(model, main_program)
+    #load_pretrained_params(model, main_program)
     test_program = main_program.clone(for_test=True)
     # state_dict = model.state_dict()
     #Use the state dict to update the parameter
