@@ -60,6 +60,7 @@ class Demo:
                 break
             out.append(nid)
         logger.info(text)
+        logger.info(out)
         logger.info(self.tokenizer.decode(out))
 
     # One shot example
@@ -72,9 +73,11 @@ class Demo:
 
 
 if __name__ == "__main__":
-    demo = Demo("gpt2-base-cn")
-    demo.ask_question("百度的厂长是谁?")
-    demo.dictation_poetry("举杯邀明月，")
-    del demo
-    # demo = Demo("gpt2-medium-en")
-    # demo.predict("Question: Where is the capital of China? Answer: Beijing. \nQuestion: Who is the CEO of Apple? Answer:", 20)
+    # demo = Demo("gpt2-base-cn")
+    # demo.ask_question("百度的厂长是谁?")
+    # demo.dictation_poetry("举杯邀明月，")
+    # del demo
+    demo = Demo("gpt2-medium-en")
+    demo.predict(
+        "Question: Where is the capital of China? Answer: Beijing. \nQuestion: Who is the CEO of Apple? Answer:",
+        20)

@@ -128,6 +128,10 @@ def main():
     tokenizer = tokenizer_class.from_pretrained(
         os.path.dirname(args.model_path))
     ds = ["问题：中国的首都是哪里？答案：北京。\n问题：百度的厂长是谁? 答案："]
+    if args.model_type == "gpt2":
+        ds = [
+            "Question: Where is the capital of China? Answer: Beijing. \nQuestion: Who is the CEO of Apple? Answer:"
+        ]
     dataset = [
         np.array(tokenizer.encode(text)).astype("int64").reshape([1, 1, -1])
         for text in ds

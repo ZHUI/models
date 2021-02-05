@@ -144,6 +144,10 @@ def do_train(args):
     # reset_state_dict = copy_program_state_dict(state_dict, tensor_dict)
     # paddle.static.set_program_state(main_program, reset_state_dict)
     ds = ["问题：中国的首都是哪里？答案：北京。\n问题：百度的厂长是谁? 答案："]
+    if args.model_type == "gpt2":
+        ds = [
+            "Question: Where is the capital of China? Answer: Beijing. \nQuestion: Who is the CEO of Apple? Answer:"
+        ]
     dataset = [
         np.array(tokenizer.encode(text)).astype("int64").reshape([1, -1])
         for text in ds
