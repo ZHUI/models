@@ -37,7 +37,7 @@ from data import GPT2Dataset
 import lr
 
 MODEL_CLASSES = {
-    "gpt2": (GPT2ForPretraining, GPT2Tokenizer),
+    "gpt2": (GPT2ForGreedyGeneration, GPT2Tokenizer),
     "gpt2-cn": (GPT2ForGreedyGeneration, GPT2ChineseTokenizer),
 }
 
@@ -100,7 +100,9 @@ def load_pretrained_params(model, program):
     state_dict = model.state_dict()
     #Use the state dict to update the parameter
     tensor_dict = paddle.load(
-        "/ssd1/zhonghui03/.paddlenlp/models/gpt2-base-cn/gpt2-base-cn.pdparams")
+        "/ssd1/zhonghui03/.paddlenlp/models/gpt2-medium-en/gpt2-medium-en.pdparams"
+    )
+    #    "/ssd1/zhonghui03/.paddlenlp/models/gpt2-base-cn/gpt2-base-cn.pdparams")
     reset_state_dict = copy_program_state_dict(state_dict, tensor_dict)
     paddle.static.set_program_state(program, reset_state_dict)
 

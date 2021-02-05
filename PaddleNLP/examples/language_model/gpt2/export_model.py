@@ -16,9 +16,12 @@ import argparse
 import os
 
 import paddle
-from paddlenlp.transformers import GPT2ForGreedyGeneration, GPT2ChineseTokenizer
+from paddlenlp.transformers import GPT2ForGreedyGeneration, GPT2ChineseTokenizer, GPT2Tokenizer
 
-MODEL_CLASSES = {"gpt2": (GPT2ForGreedyGeneration, GPT2ChineseTokenizer)}
+MODEL_CLASSES = {
+    "gpt2-cn": (GPT2ForGreedyGeneration, GPT2ChineseTokenizer),
+    "gpt2": (GPT2ForGreedyGeneration, GPT2Tokenizer),
+}
 
 
 def parse_args():

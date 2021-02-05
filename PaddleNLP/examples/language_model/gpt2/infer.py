@@ -20,9 +20,12 @@ import paddle
 import numpy as np
 from paddle import inference
 from paddlenlp.data import Stack, Tuple, Pad
-from paddlenlp.transformers import GPT2ForGreedyGeneration, GPT2ChineseTokenizer
+from paddlenlp.transformers import GPT2ForGreedyGeneration, GPT2ChineseTokenizer, GPT2Tokenizer
 
-MODEL_CLASSES = {"gpt2": (GPT2ForGreedyGeneration, GPT2ChineseTokenizer)}
+MODEL_CLASSES = {
+    "gpt2-cn": (GPT2ForGreedyGeneration, GPT2ChineseTokenizer),
+    "gpt2": (GPT2ForGreedyGeneration, GPT2Tokenizer),
+}
 
 
 def parse_args():
